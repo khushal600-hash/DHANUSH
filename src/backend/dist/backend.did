@@ -1,0 +1,118 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type Timestamp = int;
+type PaymentMethod = 
+ variant {
+   cash;
+   online;
+ };
+type PaymentInput = 
+ record {
+   amount: nat;
+   customerId: CustomerId;
+   method: PaymentMethod;
+   note: text;
+   paymentDate: Timestamp;
+ };
+type PaymentId = nat;
+type Payment = 
+ record {
+   amount: nat;
+   createdAt: Timestamp;
+   customerId: CustomerId;
+   id: PaymentId;
+   method: PaymentMethod;
+   note: text;
+   paymentDate: Timestamp;
+ };
+type DeliveryView = 
+ record {
+   createdAt: Timestamp;
+   customerId: CustomerId;
+   deliveryDate: Timestamp;
+   id: DeliveryId;
+   pricePerCan: nat;
+   quantity: nat;
+   status: DeliveryStatus;
+   totalAmount: nat;
+ };
+type DeliveryStatus = 
+ variant {
+   cancelled;
+   delivered;
+   pending;
+ };
+type DeliveryInput = 
+ record {
+   customerId: CustomerId;
+   deliveryDate: Timestamp;
+   pricePerCan: nat;
+   quantity: nat;
+ };
+type DeliveryId = nat;
+type DashboardStats = 
+ record {
+   totalCustomers: nat;
+   totalDeliveries: nat;
+   totalOutstandingBalance: int;
+   totalRevenue: nat;
+ };
+type CustomerView = 
+ record {
+   address: text;
+   balance: int;
+   createdAt: Timestamp;
+   id: CustomerId;
+   name: text;
+   phone: text;
+ };
+type CustomerInput = 
+ record {
+   address: text;
+   name: text;
+   phone: text;
+ };
+type CustomerId = nat;
+service : {
+  _initializeAccessControl: () -> ();
+  addCustomer: (input: CustomerInput) -> (CustomerView);
+  addDelivery: (input: DeliveryInput) -> (DeliveryView);
+  addPayment: (input: PaymentInput) -> (Payment);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  deleteCustomer: (id: CustomerId) -> (bool);
+  deleteDelivery: (id: DeliveryId) -> (bool);
+  deletePayment: (id: PaymentId) -> (bool);
+  getCallerUserRole: () -> (UserRole) query;
+  getCustomer: (id: CustomerId) -> (opt CustomerView) query;
+  getCustomerHistory: (customerId: CustomerId) ->
+   (record {
+      deliveries: vec DeliveryView;
+      payments: vec Payment;
+    }) query;
+  getDashboard: () ->
+   (record {
+      customersWithOutstandingBalance: vec CustomerView;
+      stats: DashboardStats;
+    }) query;
+  getDelivery: (id: DeliveryId) -> (opt DeliveryView) query;
+  getPayment: (id: PaymentId) -> (opt Payment) query;
+  isCallerAdmin: () -> (bool) query;
+  listCustomers: () -> (vec CustomerView) query;
+  listCustomersWithOutstandingBalance: () -> (vec CustomerView) query;
+  listDeliveries: () -> (vec DeliveryView) query;
+  listDeliveriesForCustomer: (customerId: CustomerId) ->
+   (vec DeliveryView) query;
+  listPayments: () -> (vec Payment) query;
+  listPaymentsForCustomer: (customerId: CustomerId) -> (vec Payment) query;
+  updateCustomer: (id: CustomerId, input: CustomerInput) ->
+   (opt CustomerView);
+  updateDelivery: (id: DeliveryId, input: DeliveryInput) ->
+   (opt DeliveryView);
+  updateDeliveryStatus: (id: DeliveryId, status: DeliveryStatus) ->
+   (opt DeliveryView);
+  updatePayment: (id: PaymentId, input: PaymentInput) -> (opt Payment);
+}

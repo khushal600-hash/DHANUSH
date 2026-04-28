@@ -1,0 +1,78 @@
+// Version: 1.0.0
+type CustomerId__1015005394 = Nat;
+type Customer__225412617 =
+  {
+    var address : Text;
+    var balance : Int;
+    createdAt : Timestamp__301639476;
+    id : CustomerId__1015005394;
+    var name : Text;
+    var phone : Text
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type DeliveryId__1051918310 = Nat;
+type DeliveryStatus__208436166 = {#cancelled; #delivered; #pending};
+type Delivery__1018274548 =
+  {
+    createdAt : Timestamp__301639476;
+    customerId : CustomerId__1015005394;
+    var deliveryDate : Timestamp__301639476;
+    id : DeliveryId__1051918310;
+    var pricePerCan : Nat;
+    var quantity : Nat;
+    var status : DeliveryStatus__208436166
+  };
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PaymentId__1028686908 = Nat;
+type PaymentMethod__536423365 = {#cash; #online};
+type Payment__149302498 =
+  {
+    amount : Nat;
+    createdAt : Timestamp__301639476;
+    customerId : CustomerId__1015005394;
+    id : PaymentId__1028686908;
+    method : PaymentMethod__536423365;
+    note : Text;
+    paymentDate : Timestamp__301639476
+  };
+type Timestamp__301639476 = Int;
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable customers :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Customer__225412617]];
+      var elementIndex : Nat__490723111
+    };
+  stable deliveries :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Delivery__1018274548]];
+      var elementIndex : Nat__490723111
+    };
+  stable nextCustomerId : {var value : Nat};
+  stable nextDeliveryId : {var value : Nat};
+  stable nextPaymentId : {var value : Nat};
+  stable payments :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Payment__149302498]];
+      var elementIndex : Nat__490723111
+    }
+};

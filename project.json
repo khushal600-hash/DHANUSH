@@ -1,0 +1,21 @@
+{
+  "overview": "A water can distribution and payment management app. Track customers, log deliveries, record payments, and monitor outstanding balances — all in one place.",
+  "features": [
+    "Customer management with contact info and address",
+    "Delivery logging with date, quantity, and status",
+    "Payment recording with cash or online methods",
+    "Balance tracking per customer",
+    "Dashboard with key metrics and unpaid accounts",
+    "Searchable and sortable customer list"
+  ],
+  "category": "business",
+  "tags": [
+    "distribution",
+    "water",
+    "payments",
+    "delivery",
+    "small-business",
+    "inventory"
+  ],
+  "last_updated": "2026-04-28T09:46:17.078Z"
+}
